@@ -8,10 +8,11 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useServicesAndPricing } from '../context/ServicePriceContext';
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { useApplications } from '../context/ApplicationContext';
 
 export const BookingModal = ({ isOpen, onClose, initialService = null }) => {
   const { services } = useServicesAndPricing();
+  const { addApplication } = useApplications();
   const [applicantType, setApplicantType] = useState('Individual / Citizen');
   const [selectedService, setSelectedService] = useState(
     initialService?.title || 'Revenue & E-District Certificates'
@@ -43,22 +44,16 @@ export const BookingModal = ({ isOpen, onClose, initialService = null }) => {
       aadhaar: maskedAadhaar
     });
 
-    // Save to Supabase Cloud if configured
-    if (isSupabaseConfigured() && supabase) {
-      supabase.from('bookings').insert([
-        {
-          id: `bk-${Date.now()}`,
-          ticket_id: randomAppNo,
-          applicant_type: applicantType,
-          selected_service: selectedService,
-          name: name.trim(),
-          phone: phone.trim(),
-          aadhaar: maskedAadhaar,
-          notes: notes.trim(),
-          status: 'Submitted'
-        }
-      ]).then(() => {}).catch((err) => console.warn('Supabase booking save fallback:', err));
-    }
+    // Save directly to ApplicationContext (syncs to LocalStorage & Supabase)
+    addApplication({
+      ticket_id: randomAppNo,
+      applicant_type: applicantType,
+      selected_service: selectedService,
+      name: name.trim(),
+      phone: phone.trim(),
+      aadhaar: maskedAadhaar,
+      notes: notes.trim()
+    });
   };
 
   const handleSendToWhatsApp = () => {

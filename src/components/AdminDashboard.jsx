@@ -15,21 +15,26 @@ import {
   Layers,
   Coins,
   Bell,
-  Database
+  Database,
+  FileText
 } from 'lucide-react';
 import { useAlerts } from '../context/AlertContext';
 import { useAuth } from '../context/AuthContext';
 import { useServicesAndPricing } from '../context/ServicePriceContext';
 import { isSupabaseConfigured } from '../lib/supabase';
+import { useApplications } from '../context/ApplicationContext';
 import { AdminServicesTab } from './AdminServicesTab';
 import { AdminPricingTab } from './AdminPricingTab';
+import { AdminApplicationsTab } from './AdminApplicationsTab';
 
 export const AdminDashboard = ({ onBackToPublic }) => {
   const { alerts, addAlert, updateAlert, deleteAlert, resetAlerts } = useAlerts();
   const { currentUser, logout } = useAuth();
   const { totalServices, totalPlans } = useServicesAndPricing();
+  const { applications } = useApplications();
+  const pendingApplicationsCount = applications.filter(a => a.status === 'Submitted' || a.status === 'In Verification' || a.status === 'Under Review').length;
 
-  const [activeAdminTab, setActiveAdminTab] = useState('services'); // 'services' | 'pricing' | 'alerts'
+  const [activeAdminTab, setActiveAdminTab] = useState('applications'); // default to 'applications' or 'services'
 
   const handleLogout = () => {
     logout();
@@ -216,17 +221,42 @@ export const AdminDashboard = ({ onBackToPublic }) => {
 
         {/* Master Admin Navigation Tabs */}
         <div className="flex flex-wrap gap-2 p-1.5 rounded-2xl bg-slate-200/80 border border-slate-300/80 text-xs">
+          
+          {/* Tab: Applied Certificates */}
+          <button
+            type="button"
+            onClick={() => setActiveAdminTab('applications')}
+            className={`flex-1 min-w-[200px] py-3 px-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+              activeAdminTab === 'applications'
+                ? 'bg-emerald-700 text-white shadow-md'
+                : 'text-slate-700 hover:text-slate-900 hover:bg-white/60'
+            }`}
+          >
+            <FileText className="w-4 h-4" />
+            <span>Applied Certificates</span>
+            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+              activeAdminTab === 'applications' 
+                ? 'bg-emerald-800 text-white' 
+                : pendingApplicationsCount > 0 
+                  ? 'bg-amber-600 text-white shadow-sm' 
+                  : 'bg-slate-300 text-slate-700'
+            }`}>
+              {applications.length}
+            </span>
+          </button>
+
+          {/* Tab: Services Catalog */}
           <button
             type="button"
             onClick={() => setActiveAdminTab('services')}
-            className={`flex-1 py-3 px-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            className={`flex-1 min-w-[180px] py-3 px-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               activeAdminTab === 'services'
                 ? 'bg-emerald-700 text-white shadow-md'
                 : 'text-slate-700 hover:text-slate-900 hover:bg-white/60'
             }`}
           >
             <Layers className="w-4 h-4" />
-            <span>Manage E-Services Catalog</span>
+            <span>Manage E-Services</span>
             <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
               activeAdminTab === 'services' ? 'bg-emerald-800 text-white' : 'bg-slate-300 text-slate-700'
             }`}>
@@ -234,17 +264,18 @@ export const AdminDashboard = ({ onBackToPublic }) => {
             </span>
           </button>
 
+          {/* Tab: Pricing */}
           <button
             type="button"
             onClick={() => setActiveAdminTab('pricing')}
-            className={`flex-1 py-3 px-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            className={`flex-1 min-w-[180px] py-3 px-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               activeAdminTab === 'pricing'
                 ? 'bg-emerald-700 text-white shadow-md'
                 : 'text-slate-700 hover:text-slate-900 hover:bg-white/60'
             }`}
           >
             <Coins className="w-4 h-4" />
-            <span>Manage Prices & Govt Fees</span>
+            <span>Prices & Govt Fees</span>
             <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
               activeAdminTab === 'pricing' ? 'bg-emerald-800 text-white' : 'bg-slate-300 text-slate-700'
             }`}>
@@ -252,17 +283,18 @@ export const AdminDashboard = ({ onBackToPublic }) => {
             </span>
           </button>
 
+          {/* Tab: Circulars & Alerts */}
           <button
             type="button"
             onClick={() => setActiveAdminTab('alerts')}
-            className={`flex-1 py-3 px-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            className={`flex-1 min-w-[180px] py-3 px-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               activeAdminTab === 'alerts'
                 ? 'bg-emerald-700 text-white shadow-md'
                 : 'text-slate-700 hover:text-slate-900 hover:bg-white/60'
             }`}
           >
             <Bell className="w-4 h-4" />
-            <span>Circulars & News Alerts</span>
+            <span>Circulars & News</span>
             <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
               activeAdminTab === 'alerts' ? 'bg-emerald-800 text-white' : 'bg-slate-300 text-slate-700'
             }`}>
@@ -270,6 +302,9 @@ export const AdminDashboard = ({ onBackToPublic }) => {
             </span>
           </button>
         </div>
+
+        {/* Tab 0: Applied Certificates */}
+        {activeAdminTab === 'applications' && <AdminApplicationsTab />}
 
         {/* Tab 1: Services Catalog */}
         {activeAdminTab === 'services' && <AdminServicesTab />}

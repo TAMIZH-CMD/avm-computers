@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AlertProvider } from './context/AlertContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ServicePriceProvider } from './context/ServicePriceContext';
+import { ApplicationProvider } from './context/ApplicationContext';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Services } from './components/Services';
@@ -147,7 +148,9 @@ export default function App() {
     <AuthProvider>
       <AlertProvider>
         <ServicePriceProvider>
-          <MainApp />
+          <ApplicationProvider>
+            <MainApp />
+          </ApplicationProvider>
         </ServicePriceProvider>
       </AlertProvider>
     </AuthProvider>

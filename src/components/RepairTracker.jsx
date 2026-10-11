@@ -8,8 +8,10 @@ import {
   FileCheck2
 } from 'lucide-react';
 import { SAMPLE_TICKETS } from '../data/faqData';
+import { useApplications } from '../context/ApplicationContext';
 
 export const RepairTracker = ({ isOpen, onClose }) => {
+  const { getApplicationByTicketId } = useApplications();
   const [ticketInput, setTicketInput] = useState('TN-520241014');
   const [ticketData, setTicketData] = useState(SAMPLE_TICKETS['TN-520241014']);
   const [hasSearched, setHasSearched] = useState(true);
@@ -19,6 +21,32 @@ export const RepairTracker = ({ isOpen, onClose }) => {
   const handleSearch = (e) => {
     e.preventDefault();
     const query = ticketInput.trim().toUpperCase();
+
+    // Check live applied certificates first
+    const liveApp = getApplicationByTicketId(query);
+    if (liveApp) {
+      const step = liveApp.step || 1;
+      setTicketData({
+        ticketId: liveApp.ticket_id,
+        customerName: liveApp.name,
+        device: liveApp.selected_service,
+        issue: liveApp.notes || 'Certificate Application via AVM E-Sevai Maiyam',
+        status: liveApp.status,
+        step: step,
+        estimatedCost: 'Govt Fees Incl.',
+        dateReceived: new Date(liveApp.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+        technician: 'AVM Computers e-District Operator Desk',
+        history: [
+          { step: 1, label: 'E-Sevai Portal Submission', completed: step >= 1, timestamp: 'Received', note: 'Application submitted with citizen details.' },
+          { step: 2, label: 'VAO / Field Verification', completed: step >= 2, timestamp: step >= 2 ? 'Completed' : 'In Progress', note: liveApp.admin_notes || 'Verification of documents and revenue records.' },
+          { step: 3, label: 'Revenue Inspector (RI) Review', completed: step >= 3, timestamp: step >= 3 ? 'Completed' : 'Pending', note: 'Review and recommendation for final digital seal.' },
+          { step: 4, label: 'Tahsildar Digital Sign & Watermark Print', completed: step >= 4, timestamp: step >= 4 ? 'Ready' : 'Pending', note: 'Signed certificate ready for download and physical handover.' }
+        ]
+      });
+      setHasSearched(true);
+      return;
+    }
+
     if (SAMPLE_TICKETS[query]) {
       setTicketData(SAMPLE_TICKETS[query]);
       setHasSearched(true);
