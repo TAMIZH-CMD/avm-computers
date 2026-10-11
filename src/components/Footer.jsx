@@ -18,7 +18,7 @@ export const Footer = ({ onNavigate, onOpenAdmin }) => {
               <img 
                 src="/logo.jpg" 
                 alt="AVM Computers" 
-                className="w-11 h-11 rounded-xl object-cover border border-slate-700 shadow-md" 
+                className="w-11 h-11 rounded-full object-cover border-2 border-amber-500 shadow-md" 
               />
               <div>
                 <span className="text-lg font-bold text-white tracking-tight block">

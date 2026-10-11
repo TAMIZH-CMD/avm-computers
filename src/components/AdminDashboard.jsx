@@ -152,7 +152,7 @@ export const AdminDashboard = ({ onBackToPublic }) => {
             <img 
               src="/logo.jpg" 
               alt="AVM Computers" 
-              className="w-14 h-14 rounded-2xl object-cover border border-slate-200 shadow-md shrink-0" 
+              className="w-14 h-14 rounded-full object-cover border-2 border-amber-500 shadow-md shrink-0" 
             />
             <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2">

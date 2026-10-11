@@ -114,9 +114,9 @@ export const Navbar = ({
                 <img 
                   src="/logo.jpg" 
                   alt="AVM Computers" 
-                  className="w-12 h-12 rounded-xl object-cover shadow-md border border-slate-200 group-hover:scale-105 transition-transform" 
+                  className="w-12 h-12 rounded-full object-cover shadow-md border-2 border-amber-500 group-hover:scale-105 transition-transform" 
                 />
-                <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full"></span>
+                <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full"></span>
               </div>
               <span className="text-2xl font-black tracking-wider text-slate-900 group-hover:text-emerald-700 transition-colors">
                 AVM COMPUTERS

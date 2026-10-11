@@ -93,7 +93,7 @@ export const AdminLogin = ({ onBackToPublic }) => {
             <img 
               src="/logo.jpg" 
               alt="AVM Computers Logo" 
-              className="mx-auto w-20 h-20 rounded-2xl object-cover border-2 border-amber-400/40 shadow-xl shadow-black/60" 
+              className="mx-auto w-24 h-24 rounded-full object-cover border-2 border-amber-400 shadow-xl shadow-black/60" 
             />
 
             <div className="space-y-1">
