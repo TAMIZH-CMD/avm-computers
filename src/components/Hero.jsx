@@ -69,8 +69,8 @@ export const Hero = ({ onOpenBooking, onEnquireService }) => {
 
             {/* Main Headline */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
-              Fast, Error-Free <br className="hidden sm:inline" />
-              <span className="text-emerald-700">E-Sevai & CSC</span> Citizen Services
+              All Online Services @ One Place <br className="hidden sm:inline" />
+              <span className="text-emerald-700">AVM Computers</span>
             </h1>
 
             {/* Tamil Subheading */}
