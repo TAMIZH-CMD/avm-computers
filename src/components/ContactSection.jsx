@@ -8,7 +8,10 @@ import {
   Check 
 } from 'lucide-react';
 
+import { useApplications } from '../context/ApplicationContext';
+
 export const ContactSection = () => {
+  const { addApplication } = useApplications();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,6 +23,22 @@ export const ContactSection = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData.name.trim() || !formData.phone.trim()) {
+      alert('Please enter your name and phone number.');
+      return;
+    }
+
+    // Save order / inquiry directly to Admin Portal
+    addApplication({
+      ticket_id: `ORD-${new Date().getFullYear()}${Math.floor(10000 + Math.random() * 90000)}`,
+      applicant_type: 'Online Web Order',
+      selected_service: formData.device || 'Certificate Order',
+      name: formData.name.trim(),
+      phone: formData.phone.trim(),
+      aadhaar: formData.email ? `Email: ${formData.email}` : 'Not provided',
+      notes: formData.message.trim() || 'Online citizen order request from contact section'
+    });
+
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);

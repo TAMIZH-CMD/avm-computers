@@ -57,6 +57,21 @@ export const BookingModal = ({ isOpen, onClose, initialService = null }) => {
   };
 
   const handleSendToWhatsApp = () => {
+    // If citizen clicked WhatsApp directly, record the order in Admin Portal
+    if (!confirmedTicket && (name.trim() || phone.trim())) {
+      const randomAppNo = `TN-${new Date().getFullYear()}${Math.floor(10000 + Math.random() * 90000)}`;
+      const maskedAadhaar = aadhaar ? `XXXX-XXXX-${aadhaar.slice(-4)}` : 'Not provided';
+      addApplication({
+        ticket_id: randomAppNo,
+        applicant_type: applicantType,
+        selected_service: selectedService,
+        name: name.trim() || 'WhatsApp Citizen',
+        phone: phone.trim() || 'Via WhatsApp',
+        aadhaar: maskedAadhaar,
+        notes: notes.trim() || 'Order requested via direct WhatsApp chat'
+      });
+    }
+
     const text = `வணக்கம் AVM E-Sevai! I want to apply for a service:\n- Name: ${name || 'Citizen'}\n- Phone: ${phone || 'N/A'}\n- Service Needed: ${selectedService}\n- Notes/Details: ${notes || 'Standard application'}`;
     const url = `https://wa.me/918973842931?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank', 'noopener,noreferrer');

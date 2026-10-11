@@ -16,18 +16,54 @@ import {
   ShieldCheck,
   Send,
   Edit3,
-  X
+  X,
+  Plus,
+  ShoppingBag
 } from 'lucide-react';
 import { useApplications } from '../context/ApplicationContext';
 
 export const AdminApplicationsTab = () => {
-  const { applications, updateApplicationStatus, deleteApplication, resetApplications } = useApplications();
+  const { applications, addApplication, updateApplicationStatus, deleteApplication, resetApplications } = useApplications();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [selectedAppForEdit, setSelectedAppForEdit] = useState(null);
   const [editingRemarks, setEditingRemarks] = useState('');
   const [editingStatus, setEditingStatus] = useState('Submitted');
   const [feedbackMessage, setFeedbackMessage] = useState('');
+
+  // New Order Modal State
+  const [isNewOrderModalOpen, setIsNewOrderModalOpen] = useState(false);
+  const [newOrderName, setNewOrderName] = useState('');
+  const [newOrderPhone, setNewOrderPhone] = useState('');
+  const [newOrderService, setNewOrderService] = useState('Income Certificate (வருமான சான்றிதழ்)');
+  const [newOrderType, setNewOrderType] = useState('Walk-in Citizen Order');
+  const [newOrderNotes, setNewOrderNotes] = useState('');
+
+  const handleCreateNewOrder = (e) => {
+    e.preventDefault();
+    if (!newOrderName.trim() || !newOrderPhone.trim()) {
+      alert('Please provide Citizen Name and Phone Number.');
+      return;
+    }
+
+    const newTicketId = `ORD-${new Date().getFullYear()}${Math.floor(10000 + Math.random() * 90000)}`;
+    addApplication({
+      ticket_id: newTicketId,
+      name: newOrderName.trim(),
+      phone: newOrderPhone.trim(),
+      applicant_type: newOrderType,
+      selected_service: newOrderService,
+      aadhaar: 'Collected in Center',
+      notes: newOrderNotes.trim() || 'Direct counter order recorded by operator'
+    });
+
+    setFeedbackMessage(`New Order ${newTicketId} created successfully!`);
+    setIsNewOrderModalOpen(false);
+    setNewOrderName('');
+    setNewOrderPhone('');
+    setNewOrderNotes('');
+    setTimeout(() => setFeedbackMessage(''), 3500);
+  };
 
   // Counters
   const totalCount = applications.length;
@@ -253,6 +289,15 @@ export const AdminApplicationsTab = () => {
               Completed ({completedCount})
             </button>
           </div>
+
+          {/* Create New Order Button */}
+          <button
+            onClick={() => setIsNewOrderModalOpen(true)}
+            className="w-full md:w-auto px-4 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm cursor-pointer whitespace-nowrap"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Create New Order</span>
+          </button>
         </div>
       </div>
 
@@ -418,6 +463,114 @@ export const AdminApplicationsTab = () => {
                 Save Changes
               </button>
             </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* Create New Order Modal */}
+      {isNewOrderModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="relative w-full max-w-lg bg-white border border-slate-200 rounded-xl shadow-2xl p-6 space-y-4 max-h-[92vh] overflow-y-auto">
+            
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                  <ShoppingBag className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900 text-sm">Create New Citizen Order / Application</h3>
+                  <p className="text-xs text-slate-500">Record in-center walk-in or phone request</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setIsNewOrderModalOpen(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateNewOrder} className="space-y-3.5 text-xs">
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">Citizen / Applicant Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={newOrderName}
+                  onChange={(e) => setNewOrderName(e.target.value)}
+                  placeholder="e.g. S. Murugesan"
+                  className="w-full p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">Mobile / WhatsApp Number *</label>
+                  <input
+                    type="tel"
+                    required
+                    value={newOrderPhone}
+                    onChange={(e) => setNewOrderPhone(e.target.value)}
+                    placeholder="e.g. 9876543210"
+                    className="w-full p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">Order Source / Type</label>
+                  <select
+                    value={newOrderType}
+                    onChange={(e) => setNewOrderType(e.target.value)}
+                    className="w-full p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none"
+                  >
+                    <option value="Walk-in Citizen Order">Walk-in Counter Order</option>
+                    <option value="Phone / WhatsApp Order">Phone / WhatsApp Booking</option>
+                    <option value="CSC Online Service">CSC Online Service</option>
+                    <option value="Student Application">Student Application</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">Service / Certificate Ordered</label>
+                <input
+                  type="text"
+                  value={newOrderService}
+                  onChange={(e) => setNewOrderService(e.target.value)}
+                  placeholder="e.g. Income Certificate, Patta Transfer, Ration Card..."
+                  className="w-full p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">Operator Notes / Documents Collected</label>
+                <textarea
+                  rows={3}
+                  value={newOrderNotes}
+                  onChange={(e) => setNewOrderNotes(e.target.value)}
+                  placeholder="e.g. Aadhaar copy received, ₹100 govt fee collected. Submitted to Tahsildar portal."
+                  className="w-full p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none resize-none"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setIsNewOrderModalOpen(false)}
+                  className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-lg text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 shadow-sm flex items-center gap-1.5"
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Save Order to Portal</span>
+                </button>
+              </div>
+            </form>
 
           </div>
         </div>
