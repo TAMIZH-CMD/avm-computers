@@ -14,13 +14,20 @@ export const Footer = ({ onNavigate, onOpenAdmin }) => {
           
           {/* Brand Col */}
           <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white">
-                <Building2 className="w-4 h-4" />
+            <div className="flex items-center space-x-3">
+              <img 
+                src="/logo.jpg" 
+                alt="AVM Computers" 
+                className="w-11 h-11 rounded-xl object-cover border border-slate-700 shadow-md" 
+              />
+              <div>
+                <span className="text-lg font-bold text-white tracking-tight block">
+                  AVM Computers <span className="text-emerald-400">E-Sevai & CSC</span>
+                </span>
+                <span className="text-[11px] font-semibold text-amber-400 block">
+                  ஏ.வி.எம் கம்ப்யூட்டர்ஸ்
+                </span>
               </div>
-              <span className="text-lg font-bold text-white tracking-tight">
-                AVM Computers <span className="text-emerald-400">E-Sevai & CSC</span>
-              </span>
             </div>
 
             <p className="text-slate-400 text-xs leading-relaxed">

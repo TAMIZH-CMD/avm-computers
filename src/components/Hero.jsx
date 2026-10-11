@@ -62,9 +62,9 @@ export const Hero = ({ onOpenBooking, onEnquireService }) => {
           <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
             
             {/* Pill Tag */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200">
-              <Landmark className="w-3.5 h-3.5 text-emerald-700" />
-              <span>அரசு இ-சேவை மையம் • Authorized TNeGA & CSC Kendra</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200 shadow-sm">
+              <img src="/logo.jpg" alt="AVM" className="w-5 h-5 rounded-full object-cover border border-emerald-300" />
+              <span>AVM Computers • அரசு இ-சேவை மையம் • Authorized CSC Kendra</span>
             </div>
 
             {/* Main Headline */}

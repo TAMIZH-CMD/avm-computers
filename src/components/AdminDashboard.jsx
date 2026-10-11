@@ -143,11 +143,17 @@ export const AdminDashboard = ({ onBackToPublic }) => {
         
         {/* Top Header */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between pb-4 border-b border-slate-200 gap-4">
-          <div className="space-y-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200 uppercase tracking-wider">
-                Operator Dashboard
-              </span>
+          <div className="flex items-start gap-3.5">
+            <img 
+              src="/logo.jpg" 
+              alt="AVM Computers" 
+              className="w-14 h-14 rounded-2xl object-cover border border-slate-200 shadow-md shrink-0" 
+            />
+            <div className="space-y-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200 uppercase tracking-wider">
+                  Operator Dashboard
+                </span>
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
                 <Lock className="w-3 h-3 text-emerald-700" />
                 <span>256-Bit Encrypted Session</span>
@@ -175,6 +181,7 @@ export const AdminDashboard = ({ onBackToPublic }) => {
               Manage live citizen e-Services, transparent fee structures, and public circulars. Changes update the public website immediately.
             </p>
           </div>
+        </div>
 
           <div className="flex flex-wrap items-center gap-2">
             {activeAdminTab === 'alerts' && (

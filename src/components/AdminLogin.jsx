@@ -90,9 +90,11 @@ export const AdminLogin = ({ onBackToPublic }) => {
           
           {/* Header Branding */}
           <div className="text-center space-y-3 pb-6 border-b border-slate-800">
-            <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-900 border border-emerald-500/30 flex items-center justify-center shadow-lg shadow-emerald-900/40 text-emerald-100">
-              <Building2 className="w-8 h-8" />
-            </div>
+            <img 
+              src="/logo.jpg" 
+              alt="AVM Computers Logo" 
+              className="mx-auto w-20 h-20 rounded-2xl object-cover border-2 border-amber-400/40 shadow-xl shadow-black/60" 
+            />
 
             <div className="space-y-1">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-600/40 text-emerald-400 text-[11px] font-bold uppercase tracking-wider">
