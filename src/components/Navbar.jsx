@@ -113,19 +113,14 @@ export const Navbar = ({
               <div className="relative">
                 <img 
                   src="/logo.jpg" 
-                  alt="AVM Computers" 
+                  alt="AVM Computer" 
                   className="w-12 h-12 rounded-xl object-cover shadow-md border border-slate-200 group-hover:scale-105 transition-transform" 
                 />
                 <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full"></span>
               </div>
-              <div className="flex flex-col">
-                <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 group-hover:text-emerald-700 transition-colors leading-tight">
-                  AVM Computers
-                </span>
-                <span className="text-[11px] font-bold text-amber-700 tracking-wide">
-                  ஏ.வி.எம் கம்ப்யூட்டர்ஸ் • E-Sevai & CSC
-                </span>
-              </div>
+              <span className="text-2xl font-black tracking-wider text-slate-900 group-hover:text-emerald-700 transition-colors">
+                AVM COMPUTER
+              </span>
             </div>
 
             {/* Desktop Navigation Links */}
